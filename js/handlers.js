@@ -1,85 +1,31 @@
-const PARENT_TAG = 'PRE'
-
-const getParentElement = () => {
-    return document.getSelection().anchorNode.parentElement
+const getSelectionTagName = () => {
+    return document.getSelection().focusNode.parentElement.tagName.toUpperCase()
 }
 
-const getParentElementTag = () => {
-    const parentElement = getParentElement()
-
-    if (!parentElement) return
-
-    return parentElement.tagName.toUpperCase()
+const clickButtonBold = e => {
+    document.execCommand('bold')
 }
 
-const getClassList = () => {
-    const parentElement = getParentElement()
+const clickButtonH1 = e => {
+    const t = getSelectionTagName()
 
-    if (!parentElement) return
-
-    return parentElement.classList
-}
-
-const insertFirstClass = classChange => {
-    document.execCommand(
-        'insertHTML',
-        false,
-        `<${PARENT_TAG} class="${classChange}">${document
-            .getSelection()
-            .toString()}</${PARENT_TAG}>`
-    )
-}
-
-const toggleClass = classChange => {
-    const classList = getClassList()
-
-    if (classList.contains(classChange)) {
-        classList.remove(classChange)
+    if (t === 'H1') {
+        document.execCommand('formatBlock', false, 'p')
     } else {
-        classList.add(classChange)
+        document.execCommand('formatBlock', false, 'h1')
     }
 }
 
-const removeClass = classChange => {
-    const classList = getClassList()
+const clickButtonH2 = e => {
+    const t = getSelectionTagName()
 
-    if (classList.contains(classChange)) {
-        classList.remove(classChange)
-    }
-}
-
-const formatSelection = classChange => {
-    const parentElementTagName = getParentElementTag()
-
-    if (parentElementTagName === PARENT_TAG) {
-        toggleClass(classChange)
+    if (t === 'H2') {
+        document.execCommand('formatBlock', false, 'p')
     } else {
-        insertFirstClass(classChange)
+        document.execCommand('formatBlock', false, 'h2')
     }
 }
 
-clickButtonBold = e => {
-    const classChange = CSS_CLASSES.BOLD
-    formatSelection(classChange)
-}
-
-clickButtonH1 = e => {
-    const classChange = CSS_CLASSES.H1
-
-    removeClass(CSS_CLASSES.H2)
-
-    formatSelection(classChange)
-}
-
-clickButtonH2 = e => {
-    const classChange = CSS_CLASSES.H2
-
-    removeClass(CSS_CLASSES.H1)
-
-    formatSelection(classChange)
-}
-
-clickButtonItalic = e => {
-    const classChange = CSS_CLASSES.ITALIC
-    formatSelection(classChange)
+const clickButtonItalic = e => {
+    document.execCommand('italic')
 }
